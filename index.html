@@ -1,0 +1,728 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080808">
+<title>Sakthi Digital Services | Career Portal</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+ --gold:#d6ad55;
+ --bg:#080808;
+ --panel:#141414;
+ --line:#303030;
+ --white:#fff;
+ --muted:#aaa;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:var(--bg);color:var(--white);
+ font-family:Arial,sans-serif;
+}
+header{
+ text-align:center;padding:27px 12px;
+ background:#101010;border-bottom:1px solid var(--gold);
+}
+.logo{
+ font-size:23px;font-weight:bold;
+ color:var(--gold);letter-spacing:2px;
+}
+.subtitle{color:#aaa;margin-top:8px;font-size:13px}
+nav{
+ display:flex;justify-content:center;
+ gap:10px;padding:17px;flex-wrap:wrap;
+}
+button{
+ cursor:pointer;border:1px solid var(--gold);
+ background:var(--gold);color:#111;
+ padding:12px 20px;border-radius:7px;
+ font-weight:bold;
+}
+button.outline{
+ background:transparent;color:var(--gold);
+}
+button:disabled{opacity:.5;cursor:not-allowed}
+main{max-width:950px;width:94%;margin:15px auto}
+.card{
+ background:var(--panel);padding:24px;
+ border:1px solid var(--line);
+ border-radius:14px;margin-bottom:20px;
+}
+h1{font-size:26px;margin-top:0}
+h2{color:var(--gold)}
+p{color:var(--muted);line-height:1.6}
+.grid{
+ display:grid;grid-template-columns:1fr 1fr;gap:15px;
+}
+.field{display:flex;flex-direction:column;gap:8px}
+.full{grid-column:1/-1}
+label{font-size:13px;color:#ddd}
+input,select,textarea{
+ width:100%;padding:13px;
+ border-radius:7px;border:1px solid #444;
+ background:#090909;color:white;font-size:15px;
+}
+input:focus,select:focus,textarea:focus{
+ outline:1px solid var(--gold);
+ border-color:var(--gold);
+}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.message{
+ display:none;padding:13px;border-radius:7px;
+ margin-top:15px;line-height:1.5;
+}
+.success{display:block;background:#15351e;color:#b6f5c2}
+.error{display:block;background:#451919;color:#ffc4c4}
+.hidden{display:none!important}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th,td{
+ text-align:left;padding:12px;
+ border-bottom:1px solid #333;font-size:13px;
+}
+th{color:var(--gold)}
+.tablewrap{overflow-x:auto}
+.badge{
+ color:var(--gold);border:1px solid var(--gold);
+ padding:5px 9px;border-radius:20px;font-size:11px;
+}
+footer{text-align:center;padding:25px;color:#777;font-size:12px}
+@media(max-width:600px){
+ .grid{grid-template-columns:1fr}
+ .full{grid-column:auto}
+ .card{padding:17px}
+ h1{font-size:23px}
+ .logo{font-size:19px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">SAKTHI DIGITAL SERVICES</div>
+ <div class="subtitle">CAREER PORTAL | ONLINE JOB APPLICATION</div>
+</header>
+
+<nav>
+ <button id="applyTab">Apply for Job</button>
+ <button class="outline" id="adminTab">Admin Login</button>
+</nav>
+
+<main>
+
+<!-- CANDIDATE APPLICATION -->
+
+<section class="card" id="applySection">
+
+<h1>Job Application</h1>
+<p>Apply for available job opportunities. Fill in your details and upload your latest resume.</p>
+
+<form id="applyForm">
+
+<div class="grid">
+
+<div class="field">
+<label>Full Name *</label>
+<input id="name" required maxlength="100" placeholder="Enter your name">
+</div>
+
+<div class="field">
+<label>Mobile Number *</label>
+<input id="mobile" required maxlength="10"
+pattern="[0-9]{10}" inputmode="numeric"
+placeholder="10 digit mobile number">
+</div>
+
+<div class="field">
+<label>Email Address *</label>
+<input id="email" type="email" required placeholder="Email address">
+</div>
+
+<div class="field">
+<label>Date of Birth</label>
+<input id="dob" type="date">
+</div>
+
+<div class="field">
+<label>Qualification *</label>
+<select id="qualification" required>
+<option value="">Select Qualification</option>
+<option>10th</option>
+<option>12th</option>
+<option>ITI</option>
+<option>Diploma</option>
+<option>UG</option>
+<option>PG</option>
+<option>Other</option>
+</select>
+</div>
+
+<div class="field">
+<label>Applying Job Role *</label>
+<select id="role" required>
+<option value="">Select Job Role</option>
+<option>Data Entry Operator</option>
+<option>Office Assistant</option>
+<option>Computer Operator</option>
+<option>Customer Support</option>
+<option>HR Executive</option>
+<option>Other</option>
+</select>
+</div>
+
+<div class="field">
+<label>Experience *</label>
+<select id="experience" required>
+<option value="">Select Experience</option>
+<option>Fresher</option>
+<option>0-1 Year</option>
+<option>1-3 Years</option>
+<option>3+ Years</option>
+</select>
+</div>
+
+<div class="field">
+<label>City / District *</label>
+<input id="city" required placeholder="Your city">
+</div>
+
+<div class="field full">
+<label>Full Address</label>
+<textarea id="address" rows="3" placeholder="Enter address"></textarea>
+</div>
+
+<div class="field full">
+<label>Upload Resume * (PDF / DOC / DOCX)</label>
+<input id="resume" type="file" accept=".pdf,.doc,.docx" required>
+<small style="color:#aaa">Maximum file size: 5 MB</small>
+</div>
+
+</div>
+
+<div class="actions">
+<button type="submit" id="submitBtn">SUBMIT APPLICATION</button>
+<button type="reset" class="outline">CLEAR FORM</button>
+</div>
+
+<div id="applyMessage" class="message"></div>
+
+</form>
+</section>
+
+
+<!-- ADMIN LOGIN -->
+
+<section class="card hidden" id="adminSection">
+
+<h1>Admin Login</h1>
+<p>Authorized recruitment administrators only.</p>
+
+<form id="loginForm">
+
+<div class="grid">
+
+<div class="field">
+<label>Admin Email</label>
+<input id="adminEmail" type="email" required>
+</div>
+
+<div class="field">
+<label>Password</label>
+<input id="adminPassword" type="password" required>
+</div>
+
+</div>
+
+<div class="actions">
+<button type="submit" id="loginBtn">LOGIN</button>
+<button type="button" class="outline hidden" id="logoutBtn">LOGOUT</button>
+<button type="button" class="outline hidden" id="refreshBtn">REFRESH</button>
+</div>
+
+<div id="adminMessage" class="message"></div>
+
+</form>
+
+<div id="dashboard" class="hidden">
+
+<h2>Candidate Applications</h2>
+
+<div class="tablewrap">
+<table>
+<thead>
+<tr>
+<th>Candidate</th>
+<th>Mobile</th>
+<th>Job Role</th>
+<th>Qualification</th>
+<th>Resume</th>
+<th>Status</th>
+<th>Update</th>
+</tr>
+</thead>
+<tbody id="candidateList"></tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+</main>
+
+<footer>
+© <span id="year"></span> Sakthi Digital Services.
+<br>Career Portal | Recruitment Management
+</footer>
+
+
+<script>
+
+// ====================================
+// SUPABASE CONNECTION
+// ====================================
+
+const SUPABASE_URL =
+"https://soxelkicpckxirvbtmfy.supabase.co";
+
+const SUPABASE_ANON_KEY =
+"PASTE_YOUR_OLD_EMS_ANON_KEY_HERE";
+
+const BUCKET = "candidate-resumes";
+
+const sb = window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_ANON_KEY
+);
+
+// ====================================
+// COMMON FUNCTIONS
+// ====================================
+
+const $ = id => document.getElementById(id);
+
+$("year").textContent = new Date().getFullYear();
+
+function message(id,text,type){
+ const el=$(id);
+ el.textContent=text;
+ el.className="message "+type;
+}
+
+function switchTab(tab){
+
+ $("applySection").classList.toggle("hidden",tab!=="apply");
+
+ $("adminSection").classList.toggle("hidden",tab!=="admin");
+
+ $("applyTab").classList.toggle("outline",tab!=="apply");
+
+ $("adminTab").classList.toggle("outline",tab!=="admin");
+
+}
+
+$("applyTab").onclick=()=>switchTab("apply");
+
+$("adminTab").onclick=()=>switchTab("admin");
+
+
+// ====================================
+// CANDIDATE APPLICATION
+// ====================================
+
+$("applyForm").addEventListener("submit",async function(e){
+
+ e.preventDefault();
+
+ const file=$("resume").files[0];
+
+ if(!file){
+  message("applyMessage","Please upload your resume.","error");
+  return;
+ }
+
+ if(file.size>5*1024*1024){
+  message("applyMessage","File must be under 5 MB.","error");
+  return;
+ }
+
+ const extension=file.name.split(".").pop().toLowerCase();
+
+ if(!["pdf","doc","docx"].includes(extension)){
+  message("applyMessage","Only PDF, DOC and DOCX files are accepted.","error");
+  return;
+ }
+
+ const btn=$("submitBtn");
+
+ btn.disabled=true;
+ btn.textContent="SUBMITTING...";
+
+ let path=null;
+
+ try{
+
+  const id=crypto.randomUUID();
+
+  const filename=file.name.replace(/[^a-zA-Z0-9._-]/g,"_").slice(-100);
+
+  path=id+"/"+filename;
+
+  // Upload resume
+
+  const upload=await sb.storage
+  .from(BUCKET)
+  .upload(path,file,{
+   upsert:false,
+   contentType:file.type || "application/octet-stream"
+  });
+
+  if(upload.error) throw upload.error;
+
+  // Save candidate details
+
+  const candidate={
+
+   full_name:$("name").value.trim(),
+
+   mobile:$("mobile").value.trim(),
+
+   email:$("email").value.trim(),
+
+   date_of_birth:$("dob").value || null,
+
+   qualification:$("qualification").value,
+
+   job_role:$("role").value,
+
+   experience:$("experience").value,
+
+   city:$("city").value.trim(),
+
+   address:$("address").value.trim() || null,
+
+   resume_path:path,
+
+   status:"Pending"
+
+  };
+
+  const result=await sb
+  .from("job_applications")
+  .insert(candidate);
+
+  if(result.error) throw result.error;
+
+  $("applyForm").reset();
+
+  message(
+   "applyMessage",
+   "Application submitted successfully! Our recruitment team will contact you if shortlisted.",
+   "success"
+  );
+
+ }catch(error){
+
+  console.error(error);
+
+  // Remove uploaded file if database insertion failed
+
+  if(path){
+   await sb.storage.from(BUCKET).remove([path]);
+  }
+
+  message(
+   "applyMessage",
+   "Application failed: "+error.message,
+   "error"
+  );
+
+ }finally{
+
+  btn.disabled=false;
+  btn.textContent="SUBMIT APPLICATION";
+
+ }
+
+});
+
+
+// ====================================
+// ADMIN LOGIN
+// ====================================
+
+$("loginForm").addEventListener("submit",async function(e){
+
+ e.preventDefault();
+
+ const btn=$("loginBtn");
+
+ btn.disabled=true;
+ btn.textContent="LOGGING IN...";
+
+ try{
+
+  const {data,error}=await sb.auth.signInWithPassword({
+
+   email:$("adminEmail").value.trim(),
+
+   password:$("adminPassword").value
+
+  });
+
+  if(error) throw error;
+
+  $("logoutBtn").classList.remove("hidden");
+  $("refreshBtn").classList.remove("hidden");
+
+  $("adminEmail").disabled=true;
+  $("adminPassword").disabled=true;
+
+  await loadCandidates();
+
+ }catch(error){
+
+  message("adminMessage",error.message,"error");
+
+ }finally{
+
+  btn.disabled=false;
+  btn.textContent="LOGIN";
+
+ }
+
+});
+
+
+// ====================================
+// ADMIN DASHBOARD
+// ====================================
+
+async function loadCandidates(){
+
+ const body=$("candidateList");
+
+ body.innerHTML="<tr><td colspan='7'>Loading...</td></tr>";
+
+ try{
+
+  const {data,error}=await sb
+  .from("job_applications")
+  .select("*")
+  .order("created_at",{ascending:false})
+  .limit(500);
+
+  if(error) throw error;
+
+  $("dashboard").classList.remove("hidden");
+
+  body.innerHTML="";
+
+  if(!data.length){
+
+   body.innerHTML="<tr><td colspan='7'>No applications found.</td></tr>";
+
+   return;
+
+  }
+
+  for(const c of data){
+
+   const tr=document.createElement("tr");
+
+   function td(value){
+
+    const el=document.createElement("td");
+
+    el.textContent=value ?? "-";
+
+    return el;
+
+   }
+
+   tr.appendChild(td(c.full_name));
+
+   tr.appendChild(td(c.mobile));
+
+   tr.appendChild(td(c.job_role));
+
+   tr.appendChild(td(c.qualification));
+
+   // Resume download
+
+   const resumeCell=document.createElement("td");
+
+   const download=document.createElement("button");
+
+   download.textContent="DOWNLOAD";
+
+   download.className="outline";
+
+   download.onclick=async()=>{
+
+    download.disabled=true;
+
+    const {data,error}=await sb.storage
+    .from(BUCKET)
+    .createSignedUrl(c.resume_path,60);
+
+    if(error){
+
+     message("adminMessage",error.message,"error");
+
+    }else{
+
+     window.open(data.signedUrl,"_blank","noopener");
+
+    }
+
+    download.disabled=false;
+
+   };
+
+   resumeCell.appendChild(download);
+
+   tr.appendChild(resumeCell);
+
+   // Current status
+
+   const statusCell=document.createElement("td");
+
+   const status=document.createElement("span");
+
+   status.className="badge";
+
+   status.textContent=c.status || "Pending";
+
+   statusCell.appendChild(status);
+
+   tr.appendChild(statusCell);
+
+   // Update status
+
+   const updateCell=document.createElement("td");
+
+   const select=document.createElement("select");
+
+   ["Pending","Shortlisted","Rejected","Selected"].forEach(value=>{
+
+    const option=document.createElement("option");
+
+    option.value=value;
+
+    option.textContent=value;
+
+    if(value===(c.status || "Pending")) option.selected=true;
+
+    select.appendChild(option);
+
+   });
+
+   const update=document.createElement("button");
+
+   update.textContent="SAVE";
+
+   update.style.marginTop="6px";
+
+   update.onclick=async()=>{
+
+    update.disabled=true;
+
+    const {error}=await sb
+    .from("job_applications")
+    .update({status:select.value})
+    .eq("id",c.id);
+
+    if(error){
+
+     message("adminMessage",error.message,"error");
+
+    }else{
+
+     message("adminMessage","Candidate status updated successfully.","success");
+
+     status.textContent=select.value;
+
+    }
+
+    update.disabled=false;
+
+   };
+
+   updateCell.append(select,update);
+
+   tr.appendChild(updateCell);
+
+   body.appendChild(tr);
+
+  }
+
+  message(
+   "adminMessage",
+   data.length+" candidate applications loaded.",
+   "success"
+  );
+
+ }catch(error){
+
+  body.innerHTML="";
+
+  message("adminMessage",error.message,"error");
+
+ }
+
+}
+
+
+// ====================================
+// REFRESH
+// ====================================
+
+$("refreshBtn").onclick=loadCandidates;
+
+
+// ====================================
+// LOGOUT
+// ====================================
+
+$("logoutBtn").onclick=async()=>{
+
+ const {error}=await sb.auth.signOut();
+
+ if(error){
+
+  message("adminMessage",error.message,"error");
+
+  return;
+
+ }
+
+ $("dashboard").classList.add("hidden");
+
+ $("logoutBtn").classList.add("hidden");
+
+ $("refreshBtn").classList.add("hidden");
+
+ $("adminEmail").disabled=false;
+
+ $("adminPassword").disabled=false;
+
+ $("loginForm").reset();
+
+ message("adminMessage","Logged out successfully.","success");
+
+};
+
+
+// ====================================
+// END
+// ====================================
+
+</script>
+
+</body>
+  </html>
+  
